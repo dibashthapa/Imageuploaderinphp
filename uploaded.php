@@ -1,4 +1,7 @@
 <?php 
+session_start();
+include_once "conn.php";
+$id=$_SESSION['id'];
 if (isset($_POST['submit']))
 {
    $username=$_POST["username"];
@@ -12,9 +15,11 @@ $ActualFileExt=strtolower(end($fileExt));
 if (in_array($ActualFileExt,$allowedExt)){
 if ($fileError === 0) {
 if ($fileSize <1000000) {
-$filenamenew=$username.'.'.$ActualFileExt;
+$filenamenew='profile'.$id.'.'.$ActualFileExt;
 $filelocation='uploads/'.$filenamenew;
 move_uploaded_file($tempFileName,$filelocation);
+$sql="UPDATE profileimg SET status=0 WHERE userid='$id';";
+$result=mysqli_query($conn.$sql);
 echo "You are welcome".$username;
 }
 else {
